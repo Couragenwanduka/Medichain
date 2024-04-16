@@ -1,0 +1,97 @@
+.logo{
+    width: 150% ;
+    height: 150%;
+}
+.logoContainer{
+    border-bottom: 1px solid #7D7A85;
+}
+.homeScreenText{
+    font-size: 20px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.25s;
+    margin-top: 5%;
+    -webkit-text-fill-color:  #7D7A85;
+    /* -webkit-text-fill-color: #7D7A85; */;
+    color: #000000;
+   
+}
+.containerDiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    
+}
+.textPara{
+    font-size: 20px;
+    font-weight: 400;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.25s;
+    margin-top: 5%;
+    color: #939393;
+}
+.contactus{
+    color: #4BB2B9;
+}
+
+/* Media query for tablets and larger screens */
+@media screen and (min-width: 768px) {
+    .logo{
+        width: 60% ;
+        height: 60%;
+    }
+    .containerDiv{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        
+        
+    }
+    .homeScreenText{
+        font-size: 40px;
+        font-weight: 400;
+        font-family: inherit;
+        cursor: pointer;
+        text-align: center;
+        transition: border-color 0.25s;
+        margin-top: 2%;
+        -webkit-text-fill-color:  #7D7A85;
+        /* -webkit-text-fill-color: #7D7A85; */;
+        color: #000000;
+       
+    }
+    .doctor{
+        width: 70% ;
+        height: 70%;
+    }
+    .patient{
+        width: 70% ;
+        height: 70%;
+    }
+    .textPara{
+        font-size: 20px;
+        font-weight: 400;
+        font-family: inherit;
+        cursor: pointer;
+        text-align: center;
+        transition: border-color 0.25s;
+        margin-top: 2%;
+        color: #939393;
+    }
+    .contactus{
+        color: #4BB2B9;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    .container {
+      max-width: 1024px; /* Set a maximum width for desktop screens */
+    }
+  }

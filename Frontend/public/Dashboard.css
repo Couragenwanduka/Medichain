@@ -1,0 +1,166 @@
+.containerDiv1{
+    display: flex;
+    justify-content: space-between;
+}
+.imagecontainer{
+    width: 50%;
+    height: 10%;
+}
+.image{
+    width: 90%;
+    height: 90%;
+
+}
+.userDiv{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F3F3F4;
+    border-radius: 20px;
+    width: 100px;
+    margin-top: 10px;
+    
+}
+.main{
+    display: flex;
+    justify-content: space-evenly;
+    width: 50%;
+    
+}
+.notification{
+    margin-top: 15px;
+    width: 30px;
+    height: 30px;
+
+}
+
+.aside {
+    display: flex; /* Use flexbox layout */
+    flex-direction: column; /* Arrange items vertically */
+    background-color: #F3F3F4; /* Set background color */
+    padding: 20px; /* Add padding for better visual appearance */
+    height: 400px;
+    width: 200px;
+}
+
+.aside > div {
+    margin-bottom: 20px; /* Add spacing between items */
+}
+
+.aside > div:last-child {
+    margin-bottom: 0; /* Remove margin from the last item */
+}
+.btnD {
+    display: flex; /* Use flexbox layout to align items horizontally */
+    align-items: center; /* Align items vertically */
+    width: 200px;
+    border: none;
+    cursor: pointer;
+    padding: 20px 40px; /* Adjust padding as needed */
+    position: relative;
+    border-radius: 20px;
+}
+
+.btnD:hover {
+    background-color: #0F4C5C;
+    color: white;
+}
+
+.imageD {
+    margin-right: 10px; /* Add margin to separate the image from the text */
+}
+.appointmentDiv{
+    margin-left: 30%;
+    margin-top: -35%;
+}
+
+.appointmentDiv div{
+   display: flex;
+}
+.appointmentDiv p{
+    color: #DF2935;
+    font-size: 15px;
+}
+.appointmentDiv button{
+    width: 300px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #0F4C5C;
+    border: none;
+    margin-left: 80px;
+    color: white;
+}
+ .doctorDiv{
+    height: 100px;
+   width: 200px;
+   border-radius: 20px;
+   margin-left: 20px;
+   
+ }
+ .mainDiv1{
+color: #DF2935;
+   width: 100px;
+   height: 70px;
+   border-radius: 20px;
+   margin-left: 20px;
+  
+ }
+ .ProfileDiv{
+    margin-left: 30%;
+    margin-top: -35%;
+ }
+ @media screen and (max-width: 768px){
+    .aside {
+        display: flex; /* Use flexbox layout */
+        flex-direction: row; /* Arrange items vertically */
+        background-color: #F3F3F4; 
+        padding: 0px; /* Add padding for better visual appearance */
+        height: 0px;
+        width: 100px;
+        margin-top: 20px;
+       
+    }
+    .btnD {
+        display: flex; /* Use flexbox layout to align items horizontally */
+        align-items: center; /* Align items vertically */
+        width: 100px;
+        border: none;
+        cursor: pointer;
+        padding: 10px 20px; /* Adjust padding as needed */
+        position: relative;
+        border-radius: 20px;
+        font-size: 11px;
+    }
+    
+    .btnD:hover {
+        background-color: #0F4C5C;
+        color: white;
+    }
+    .imageD {
+        margin-right: 5px; 
+        width: 10px;
+        height: 10px;
+    }
+    .appointmentDiv{
+        margin-left: 10%;
+        margin-top: 25%;
+    }
+    .ProfileDiv{
+        margin-left: 10%;
+        margin-top: 25%;
+     }
+    .appointmentDiv button{
+        width: 300px;
+        height: 40px;
+        border-radius: 20px;
+        background-color: #0F4C5C;
+        border: none;
+        margin-left: 10px;
+        color: white;
+    }
+    .image{
+        width: 150%;
+        height: 150%;
+    
+    }
+ }
