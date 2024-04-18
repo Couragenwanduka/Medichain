@@ -1,12 +1,12 @@
 import Messages from '../model/message.js';
 
-export const saveMessage = async (message,patient,doctor,time) => {
+export const saveMessage = async (message,patient,doctor) => {
     try {
         const newMessage = new Messages({
             message,
             patient,
             doctor,
-            time: time || new Date(),
+            time: new Date(),
         
         });
        const savedMessage = await newMessage.save();

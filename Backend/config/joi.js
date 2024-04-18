@@ -44,6 +44,32 @@ const loginSchema=joi.object({
     latitude:joi.number().required(),
 })
 
+const messageSchema=joi.object({
+    message:joi.string().required().min(10).max(80),
+    patient:joi.string().required(),
+    doctor:joi.string().required()
+});
+
+const updatedMessageSchema=joi.object({
+    message:joi.string().required(),
+});
+export const updateMessageValidation=(newMessage)=>{
+  try{
+    const result= updatedMessageSchema.validate(newMessage)
+    return result
+  }catch(error){
+    return error
+}
+}
+export const messageValidate=(message,patient,doctor)=>{
+    try{
+    const result= messageSchema.validate(message,patient,doctor)
+    return result
+    }catch(error){
+        return error
+    }
+}
+
 export const doctorValidation=(firstName,lastName,email,password,age,gender,specialization,experience,bio,images)=>{
      try{
      const result= doctorsSchema.validate(firstName,lastName,email,password,age,gender,specialization,experience,bio,images)
