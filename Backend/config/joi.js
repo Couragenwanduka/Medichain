@@ -40,7 +40,8 @@ export const appointmentValidate=(patient,doctor,date,time)=>{
 const loginSchema=joi.object({
     email:joi.string().email().required(),
     password:joi.string().required(),
-    location:joi.string().required()
+    longitude:joi.number().required(), 
+    latitude:joi.number().required(),
 })
 
 export const doctorValidation=(firstName,lastName,email,password,age,gender,specialization,experience,bio,images)=>{

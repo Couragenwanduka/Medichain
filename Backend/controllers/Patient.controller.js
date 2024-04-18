@@ -21,8 +21,8 @@ export const CreatePatient=async(req,res)=>{
 
 export const Login=async(req,res)=>{
      try{
-       const {email,password,location} = req.body;
-       const vaild= LoginValidation({email,password,location});
+       const {email,password,longitude , latitude} = req.body;
+       const vaild= LoginValidation({email,password,longitude , latitude});
        if(vaild.error){
            return res.status(400).json({message:"Error validating Input",error:vaild.error.details[0].message});}
        const user= await findPatientByEmail(email);
@@ -36,7 +36,7 @@ export const Login=async(req,res)=>{
             httpOnly: true,
             domain: '/', 
         };
-        const payload={user:user,location:location}
+        const payload={user:user,longitude , latitude}
         const token = jwt.sign(payload,process.env.jwt_key,{expiresIn:'12h'})
         res.cookie=('token',token,cookieOptions)
         return res.status(200).json({message:'user successfully signed in',token,user})

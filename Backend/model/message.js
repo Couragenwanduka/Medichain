@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
-const appointmentSchema= new mongoose.Schema({
+const messageSchema =new mongoose.Schema({
+    message: {
+        type: String,
+        required: true
+    },
     patient: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Patients',
@@ -16,20 +20,11 @@ const appointmentSchema= new mongoose.Schema({
         required: true
     },
     time: {
-        type: String,
+        type: Number,
         required: true
-    },
-    status: {
-        type: String,
-        enum: ['active', 'shifted','cancelled'],
-        default: 'active'
-    },
-    location:[{
-        type:String,
-        required:true
-    }]
-});
+    }
+})
 
-const Appointment = mongoose.model('Appointment', appointmentSchema);
+const Messages = mongoose.model('Messages', messageSchema);
 
-export default Appointment;
+export default Messages;

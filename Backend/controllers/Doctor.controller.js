@@ -1,6 +1,7 @@
 import { saveDoctor,findDoctorByEmail ,findDoctorBySpecialization,findAllDoctors,findDoctorAndUpdate} from "../service/Doctors.service.js";
 import {doctorValidation,LoginValidation} from '../config/joi.js';
 import {comparePassword} from '../config/bcrypt.js'
+import {verifyCookie} from '../helper/verifycookies.js'
 import jwt from 'jsonwebtoken';
 
 export const createDoctor = async (req, res) => {
@@ -45,8 +46,8 @@ export const createDoctor = async (req, res) => {
 
 export const DoctorLogin = async (req, res) => {
     try {
-        const { email, password, location } = req.body;
-        const validation = LoginValidation({ email, password, location });
+        const { email, password, longitude , latitude } = req.body;
+        const validation = LoginValidation({ email, password, longitude , latitude });
 
         if (validation.error) {
             return res.status(400).json({ message: "Error validating input", error: validation.error.details[0].message });
@@ -64,7 +65,7 @@ export const DoctorLogin = async (req, res) => {
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
-        const addLocation = await findDoctorAndUpdate(doctor._id, location);
+        const addLocation = await findDoctorAndUpdate(doctor._id, longitude , latitude);
 
         if (!addLocation) {
             return res.status(400).json({ message: "Unable to add location" });
@@ -72,7 +73,8 @@ export const DoctorLogin = async (req, res) => {
 
         const payload = {
             doctor,
-            location
+            longitude,
+            latitude
         };
 
         const token = jwt.sign(payload, process.env.jwt_key, { expiresIn: "12h" });
@@ -94,7 +96,13 @@ export const DoctorLogin = async (req, res) => {
 
 export const getAllDoctors = async (req, res) => {
     try {
-        const doctors = await findAllDoctors();
+        const authHeader= req.headers.authorization;
+        const [bearer, token] = authHeader.split(' ');
+        if (bearer!== 'Bearer' ||!token) { // Check if bearer is 'Bearer' and token exists
+            return res.status(401).json({ success: false, message: "Unauthorized" });
+        }
+        const decoded= verifyCookie(token);
+        const doctors = await findAllDoctors(decoded);
         res.status(200).json({ success: true, message: "Doctors fetched successfully", doctors });
     } catch (error) {
         console.error("Error fetching doctors:", error);
