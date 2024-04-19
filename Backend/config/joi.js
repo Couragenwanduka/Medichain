@@ -29,6 +29,25 @@ const appointmentSchema=joi.object({
     time:joi.string().required(),
 })
 
+const prescriptionSchema=joi.object({
+    drugName:joi.string().required(),
+    drugType:joi.string().required(),
+    drugDosage:joi.string().required(),
+    drugFrequency:joi.string().required(),
+    drugDuration:joi.string().required(),
+    doctor:joi.string().required(),
+    patient:joi.string().required(),
+})
+
+export const prescriptionValidate=(drugName,drugType,drugDosage,drugFrequency,drugDuration,doctor,patient)=>{
+    try{
+        const result= prescriptionSchema.validate(drugName,drugType,drugDosage,drugFrequency,drugDuration,doctor,patient)
+        return result
+    }catch(error){
+        return error
+    }
+
+}
 export const appointmentValidate=(patient,doctor,date,time)=>{
     try{
     const result= appointmentSchema.validate(patient,doctor,date,time)
