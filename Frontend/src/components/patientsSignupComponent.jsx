@@ -1,4 +1,38 @@
+import axios from 'axios';
+import { useState } from 'react';
+import {useNavigate} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 const SIGNUP = () => {
+  const [errorMessage,setErrorMessage] = useState('')
+  const navigate = useNavigate();
+  const [formdata,setFormData] = useState({
+   firstName:'',
+   lastName:'',
+   email:'',
+   password:'',
+   age:'',
+   gender:''
+    
+  })
+  const handelOnChange = (e)=>{
+    e.preventDefault();
+    setFormData({
+     ...formdata,
+      [e.target.name]: e.target.value
+    })
+  }
+  const handleSubmit =async(e)=>{
+    try{
+      e.preventDefault();
+    const response= await axios.post('http://localhost:4000/medichain/patient-signup',formdata)
+     if(response.status==200){
+      navigate('/patient-login')
+     }
+    }catch(error){
+      setErrorMessage(error.response.data.message|| 'an error occurred')
+      console.log(error)
+    }
+  }
     return (
         <div id="containerDiv">
           <img src='/closeup-support-hands 1.png' className="backgroundImage"/>
@@ -19,25 +53,31 @@ const SIGNUP = () => {
                     {/* <h1>SIGNUP</h1> */}
                     <h2>LET'S GET STARTED</h2>
                     <h3>CREATE ACCOUNT</h3>
-                    <form className="form">
-                        <label htmlFor="name">Name</label>
-                        <input type="text" id="name" placeholder="Name" />
+                    <form className="form" onSubmit={handleSubmit}>
+                        <label htmlFor="firstName">firstName</label>
+                        <input type="text" id="firstName" name='firstName' placeholder="First Name" onChange={handelOnChange}/>
+                        <label htmlFor="lastName">lastName</label>
+                        <input type="text" id="lastName" name='lastName' placeholder="Last Name" onChange={handelOnChange}/>
                         <label htmlFor="email">Email</label>
-                        <input type="email" id="email" placeholder="Email" />
+                        <input type="email" id="email"  name='email' placeholder="Email" onChange={handelOnChange} />
                         <label htmlFor="password">Password</label>
-                        <input type="password" id="password" placeholder="Password" />
-                        <input type="button" value={"GET STARTED"} className="btnsubmit"/>
+                        <input type="password" id="password" name='password' placeholder="Password" onChange={handelOnChange} />
+                        <label htmlFor="Age">Age</label>
+                        <input type="text" id="Age" name='age' placeholder="Age" onChange={handelOnChange}/>
+                        <label htmlFor="gender">Gender</label>
+                        <input type="text" id="gender" name='gender' placeholder="Gender" onChange={handelOnChange}/>
+                        <input type="submit" value={"GET STARTED"} className="btnsubmit"/>
+                        {errorMessage&&(<p className='message'>{errorMessage}</p>)}
                         <p className="or"> OR</p>
                         <div className="google-button">
                         <input type="button" value="SIGN UP WITH GOOGLE" className="google"/>
                         <img src="icons8-google.png" alt="Google Logo"/>
                         </div>
-                        <p>Already have an account? <span><a>LOGIN HERE</a></span></p>
+                        <p>Already have an account? <span><Link to={'/patient-login'}>LOGIN HERE</Link></span></p>
                         
                     </form>
         </div>
-                
-            
+       
         </div>
     );
 }
