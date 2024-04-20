@@ -12,14 +12,13 @@ const PatientSchema=joi.object({
 const doctorsSchema=joi.object({
     firstName:joi.string().required(),
     lastName:joi.string().required(),
-    email:joi.string().required().email(),
+    email:joi.string().required(),
     password:joi.string().required().max(15).min(5),
-    age:joi.number().required(),
+    age:joi.string().required(),
     gender:joi.string().required(),
     specialization:joi.string().required(),
     experience:joi.string().required(),
-    bio:joi.string().required().max(50).min(10),
-    images:joi.string().required(),
+    bio:joi.string().required(),
 })
 
 const appointmentSchema=joi.object({
@@ -89,9 +88,9 @@ export const messageValidate=(message,patient,doctor)=>{
     }
 }
 
-export const doctorValidation=(firstName,lastName,email,password,age,gender,specialization,experience,bio,images)=>{
+export const doctorValidation=(firstName,lastName,email,password,age,gender,specialization,experience,bio)=>{
      try{
-     const result= doctorsSchema.validate(firstName,lastName,email,password,age,gender,specialization,experience,bio,images)
+     const result= doctorsSchema.validate({firstName,lastName,email,password,age,gender,specialization,experience,bio})
      return result
      }catch(error){
          return error

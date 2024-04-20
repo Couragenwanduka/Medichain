@@ -38,17 +38,17 @@ const doctorsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    image: {
+    image: [{
         type: String,
         required: true
-    },
+    }],
     longitude:{
         type: Number,
-        required: true
+        
     },
     latitude:{
         type: Number,
-        required: true
+        
     }
 })
 

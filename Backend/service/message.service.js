@@ -12,6 +12,7 @@ export const saveMessage = async (message,patient,doctor) => {
        const savedMessage = await newMessage.save();
         return savedMessage;
     } catch (error) {
+        console.log(error);
         throw new Error("Error occured while saving message", error.message);
     }
 }

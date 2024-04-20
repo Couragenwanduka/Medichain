@@ -22,6 +22,7 @@ export const CreateMessageByPatients = async (req, res) => {
     const savedMessage = await saveMessage(message,patient,doctor);
     return res.status(200).json({message:"message successfully sent", savedMessage});
     }catch(error){
+        console.log(error);
         return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
     }
 }
@@ -87,7 +88,7 @@ export const getMessageByDoctorId = async (req, res) => {
     }
 }
 
-export const deleteMessageById = async (req, res) => {
+export const deleteMessageByid = async (req, res) => {
     try{
         const _id= req.params._id
         const deletedMessage = await deleteMessageById(_id);
@@ -97,7 +98,7 @@ export const deleteMessageById = async (req, res) => {
     }
 }
 
-export const updateMessageById = async (req, res) => {
+export const updateMessageByid = async (req, res) => {
     try{
         const _id= req.params._id
         const {newMessage} =req.body; 

@@ -15,10 +15,6 @@ const messageSchema =new mongoose.Schema({
         ref: 'Doctors',
         required: true
     },
-    date: {
-        type: Date,
-        required: true
-    },
     time: {
         type: Number,
         required: true

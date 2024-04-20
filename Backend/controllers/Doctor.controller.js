@@ -2,6 +2,8 @@ import { saveDoctor,findDoctorByEmail ,findDoctorBySpecialization,findAllDoctors
 import {doctorValidation,LoginValidation} from '../config/joi.js';
 import {comparePassword} from '../config/bcrypt.js'
 import {verifyCookie} from '../helper/verifycookies.js'
+import {multipleUpload } from '../config/multer.js'
+import cloudinary from '../config/cloudinary.js'
 import jwt from 'jsonwebtoken';
 
 export const createDoctor = async (req, res) => {
@@ -12,7 +14,6 @@ export const createDoctor = async (req, res) => {
             }
             
             const images = [];
-          
             for (const file of req.files) {
                 const uploadImage = await cloudinary.uploader.upload(file.path);
                 if (!uploadImage) {
@@ -22,7 +23,7 @@ export const createDoctor = async (req, res) => {
             }
 
             const { firstName, lastName, email, password, age, gender, specialization, experience, bio} = req.body;
-            const validation = doctorValidation(firstName, lastName, email, password, age, gender, specialization, experience, bio, images);
+            const validation = doctorValidation(firstName, lastName, email, password, age, gender, specialization, experience, bio);
 
             if (validation.error) {
                 return res.status(400).json({ message: "Error validating input", error: validation.error.details[0].message });
@@ -35,7 +36,6 @@ export const createDoctor = async (req, res) => {
             }
 
             const newDoctor = await saveDoctor(firstName, lastName, email, password, age, gender, specialization, experience, bio, images);
-
             res.status(200).json({ success: true, message: "Doctor created successfully", doctor: newDoctor });
         });
     } catch (error) {
@@ -58,8 +58,7 @@ export const DoctorLogin = async (req, res) => {
         if (!doctor) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
-
-        const isMatch = await comparePassword(password, doctor.password);
+        const isMatch = await comparePassword(password, doctor);
 
         if (!isMatch) {
             return res.status(400).json({ message: "Invalid credentials" });
@@ -113,6 +112,8 @@ export const getAllDoctors = async (req, res) => {
 export const getDoctorBySpecialization = async (req, res) => {
     try {
         const {specialization} = req.params;
+        console.log(req.params)
+        console.log(specialization)
         const doctor = await findDoctorBySpecialization(specialization);
         res.status(200).json({ success: true, message: "Doctor fetched successfully", doctor });
     } catch (error) {

@@ -16,8 +16,8 @@ import {
   createMessageByDoctors,
   getMessageByPatientId,
   getMessageByDoctorId,
-  deleteMessageById,
-  updateMessageById
+  deleteMessageByid,
+  updateMessageByid
 } from '../controllers/messages.contoller.js';
 
 import {
@@ -49,8 +49,8 @@ router.post('/medichain/create-message-doctors', createMessageByDoctors);
 router.get('/medichain/get-message-by-patient-id', getMessageByPatientId);
 router.get('/medichain/get-message-by-doctor-id', getMessageByDoctorId);
 
-router.delete('/medichain/delete-message-by-id/:messageId', deleteMessageById);
-router.patch('/medichain/update-message-by-id/:messageId', updateMessageById);
+router.delete('/medichain/delete-message-by-id/:messageId', deleteMessageByid);
+router.patch('/medichain/update-message-by-id/:messageId', updateMessageByid);
 
 router.post('/medichain/create-appointment', CreateAppointment);
 router.get('/medichain/find-all-appointment-by-patient-id', FindAllAppointmentByPatientId);

@@ -2,9 +2,10 @@ import Doctors from '../model/doctor.js';
 import { hashPassword } from '../config/bcrypt.js';
 import {increaseDistance} from '../helper/range.js';
 import {getAddressInfo} from '../helper/openStreetMap.js'
-export const saveDoctor = async(firstName,lastName,email,password,age,gender,specialization,experience,bio,images,location) =>{
+export const saveDoctor = async(firstName,lastName,email,password,age,gender,specialization,experience,bio,images) =>{
     try{
-  const hashedPassword = hashPassword(password)      
+
+  const hashedPassword = await hashPassword(password)      
   const newDoctor = new Doctors({
     firstName,
     lastName,
@@ -16,12 +17,12 @@ export const saveDoctor = async(firstName,lastName,email,password,age,gender,spe
     experience,
     bio,
     image:images,
-    location
   })
   const savedDoctor = await newDoctor.save();
   return savedDoctor
     }catch(error){
-        throw new Error ("Error occured while saving saving Doctor ",error.message);
+        console.log(error,"save failed");
+        // throw new Error ("Error occured while saving saving Doctor hmm ",error.message);
     }
 }
 
@@ -36,7 +37,8 @@ export const findDoctorByEmail = async(email) =>{
 
 export const findDoctorBySpecialization= async(specialization) =>{
     try{
-        const doctor = await Doctors.findOne({specialization});
+        console.log(specialization)
+        const doctor = await Doctors.find({specialization});
         return doctor
     }catch(error){
         throw new Error ("Error occured while finding doctor by specialization ",error.message);
@@ -44,12 +46,12 @@ export const findDoctorBySpecialization= async(specialization) =>{
 }
 export const findAllDoctors = async (decoded) => {
     try {
-        const latitude = decoded.Doctors.latitude;
-        const longitude = decoded.Doctors.longitude;
+        const latitude = decoded.latitude;
+        const longitude = decoded.longitude;
 
         // Increase the distance by 30km from the current latitude and longitude
         const range = increaseDistance(latitude, longitude, 30);
-        const { latitude: newLatitude, longitude: newLongitude } = range;
+        const { newLatitude,  newLongitude } = range;
 
         // Find doctors within the range defined by the original and new latitude and longitude
         const doctors = await Doctors.find({
@@ -60,13 +62,11 @@ export const findAllDoctors = async (decoded) => {
         const doctorArrays = [];
         
         // Iterate through each doctor object
-        doctors.forEach(doctor => {
+        for (const doctor of doctors) {
             // Get address information for the doctor's latitude and longitude
-            const address = getAddressInfo(doctor.latitude, doctor.longitude);
-            
-            // Push an array containing the address and the doctor object to the doctorArrays
+            const address = await getAddressInfo(doctor.latitude, doctor.longitude);
             doctorArrays.push([address, doctor]);
-        });
+        }
 
         return doctorArrays;
     } catch (error) {

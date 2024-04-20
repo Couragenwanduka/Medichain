@@ -1,4 +1,4 @@
-import Prescription from "../model/prescription";
+import Prescription from "../model/prescription.js";
 
 export const savePrescription = async (drugName,drugType,drugDosage,drugFrequency,drugDuration,doctor,patient) => {
    try{

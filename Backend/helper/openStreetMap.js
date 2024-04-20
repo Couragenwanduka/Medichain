@@ -18,8 +18,11 @@ export const getAddressInfo= async(latitude, longitude)=>{
         if (data.address) {
             const streetNumber = data.address.house_number || '';
             const streetName = data.address.road || '';
+            const city = data.address.city || '';
+            const state = data.address.state || '';
+            const country = data.address.country || '';
 
-            return { streetNumber, streetName };
+            return { streetNumber, streetName, city, state, country};
         } else {
             throw new Error('No address found for the provided coordinates');
         }
