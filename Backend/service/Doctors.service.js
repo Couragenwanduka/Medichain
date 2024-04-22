@@ -35,11 +35,33 @@ export const findDoctorByEmail = async(email) =>{
     }
 }
 
-export const findDoctorBySpecialization= async(specialization) =>{
+export const findDoctorBySpecialization= async(decoded,specialization) =>{
     try{
-        console.log(specialization)
-        const doctor = await Doctors.find({specialization});
-        return doctor
+        const latitude = decoded.latitude;
+        const longitude = decoded.longitude;
+        // Increase the distance by 30km from the current latitude and longitude
+        const range = increaseDistance(latitude, longitude, 30);
+        const { newLatitude,  newLongitude } = range;
+
+        // Find doctors within the range defined by the original and new latitude and longitude
+        const doctors = await Doctors.find({
+            latitude: { $gte: Math.min(latitude, newLatitude), $lte: Math.max(latitude, newLatitude) },
+            longitude: { $gte: Math.min(longitude, newLongitude), $lte: Math.max(longitude, newLongitude) }
+        }).exec();
+        
+        const doctorArrays = [];
+        
+        // Iterate through each doctor object
+        for (const doctor of doctors) {
+            // Get address information for the doctor's latitude and longitude
+            const address = await getAddressInfo(doctor.latitude, doctor.longitude);
+            if(doctor.specialization === specialization){
+                doctorArrays.push({address, doctor});
+            }else{
+                continue;
+            }   
+        }
+        return doctorArrays;
     }catch(error){
         throw new Error ("Error occured while finding doctor by specialization ",error.message);
     }

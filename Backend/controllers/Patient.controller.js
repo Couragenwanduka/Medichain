@@ -21,7 +21,8 @@ export const CreatePatient=async(req,res)=>{
 
 export const Login=async(req,res)=>{
      try{
-       const {email,password,longitude , latitude} = req.body;
+       const {formData,longitude , latitude} = req.body;
+       const {email,password} = formData;
        const vaild= LoginValidation({email,password,longitude , latitude});
        if(vaild.error){
            return res.status(400).json({message:"Error validating Input",error:vaild.error.details[0].message});}

@@ -1,0 +1,218 @@
+.containerDiv{
+    display: flex;
+    flex-direction: column;
+    
+ }
+ .backgroundImage{
+     position:absolute;
+     height: 150%;
+     width: 100%;
+ }
+ .btn{
+     margin-top: 10px;
+     margin-bottom: 10px;
+     margin-left: 10px;
+     margin-right: 10px;
+     border-radius: 20px;
+     border: none;
+     background-color: #FFFFFF;
+     cursor: pointer;
+     position: absolute;
+     width: 130px;
+     height: 40px;
+     font-size: 15px;
+ }
+ .btn img{
+     width: 20%;
+     height: 40%;
+ }
+ .moto{
+     width: 100%;
+     height: 40%;
+     margin-top: 20%;
+     position: absolute;
+    background-color: #0F4C5C;
+    overflow-wrap: break-word;
+    inline-size: 500px;
+   margin-left: 5%;
+   border-radius: 10px;
+ }
+ .moto h1{
+     font-size: 30px;
+     font-weight: 400;
+     font-family: inherit;
+     cursor: pointer;
+     text-align: center;
+     transition: border-color 0.25s;
+     margin-top: 5%;
+     color: white;
+ }
+ 
+ .moto p{
+     font-size: 15px;
+     font-weight: 100;
+     font-family: inherit;
+     cursor: pointer;
+     text-align: center;
+     transition: border-color 0.25s;
+     margin-top: 5%;
+     color: white;
+ }
+ 
+ .formDiv{
+     position: absolute;
+     margin-left: 50%;
+     width: 40%;
+     height: 80%;
+     margin-top: 2%;
+     background-color: #EEEEEE;
+     border-radius: 20px;
+ }
+ 
+ 
+ .form{
+     width: 80%;
+     /* height: 130%; */
+     margin-top: 2%;
+     margin-left: 40px;
+     
+ }
+ 
+ .form input{
+     width: 100%;
+     height: 31px;
+     margin-top: 5px;
+     margin-bottom: 10px;
+     margin-left: 10px;
+     margin-right: 10px;
+     border-radius: 20px;
+     border: none;
+     cursor: pointer;
+     font-size: 15px;
+     
+ }
+ 
+ .form input:focus{
+     outline: 4px auto -webkit-focus-ring-color;
+ }
+ .formDiv h1{
+     margin-left: 40px;
+     font-size: 30px;
+     color: #7D7A85;
+ }
+ 
+ .formDiv h2{
+     margin-left: 25px;
+     font-size: 20px;
+     color: #000000;
+ }
+ 
+ .formDiv h3{
+     margin-left: 40px;
+     font-size: 25px;
+     color: #000000;
+ }
+ .btnsubmit{
+     background-color: #0F4C5C;
+     color: #FFFFFF;
+ }
+ 
+ .btnsubmit:hover{
+     background-color: #062e38;
+     color: #FFFFFF;
+ }
+ .or{
+    text-align: center;
+ }
+ 
+ .or::before {
+     content: "";
+     position: absolute;
+     display: block;
+     width: 28%;
+     margin-top: 10px;
+     margin-left: 30px;
+     height: 1px;
+     background-color: #cab9b9; 
+     /* margin-bottom: 10px;  */
+ }
+ 
+ .or::after {
+     content: "";
+     position: absolute;
+     display: block;
+     width: 28%;
+     margin-top: -8px;
+     margin-left: 260px;
+     height: 1px;
+     background-color: #cab9b9; 
+     /* margin-bottom: 10px;  */
+ }
+ .google{
+     color: #EEEEEE;
+     background-color: white;
+ }
+ .google-button {
+     position: relative;
+ }
+ 
+ .google-button img {
+     position: absolute;
+     top: 50%;
+     right: 10px; /* Adjust the position as needed */
+     transform: translateY(-50%);
+     width: 20px; /* Adjust the width as needed */
+     height: auto;
+ }
+ .message{
+     font-size: 20px;
+     color: #000000;
+     font-weight: bold;
+     font-family: monospace;
+ }
+ 
+   
+   @media only screen and (max-width: 600px) {
+     /* Adjust styles for mobile view */
+     .toast-container {
+       width: calc(100% - 32px);
+       margin: 0 auto;
+     }
+   }
+   
+   
+ 
+ @media screen and (max-width: 768px) {
+     .formDiv{
+         position: absolute;
+         margin-left: 0%;
+         width: 100%;
+         height: 100%;
+         margin-top: 100%;
+         background-color: #EEEEEE;
+         border-radius: 20px;
+         gap: 20px;
+     }
+     .moto{
+         width: 100%;
+         height: 40%;
+         margin-top: 20%;
+         position: absolute;
+        background-color: #0F4C5C;
+        overflow-wrap: break-word;
+        inline-size: 350px;
+       border-radius: 10px;
+       margin-left: 0px;
+     }
+     .backgroundImage{
+         position:absolute;
+         height: 100%;
+         width: 100%;
+     }
+     .toast-container {
+         width: calc(100% - 32px);
+         margin: 0 auto;
+       }
+ }
+ 
+ 

@@ -14,15 +14,16 @@ export const getAddressInfo= async(latitude, longitude)=>{
     try {
         const response = await fetch(url);
         const data = await response.json();
-
+        console.log(data)
         if (data.address) {
             const streetNumber = data.address.house_number || '';
             const streetName = data.address.road || '';
             const city = data.address.city || '';
             const state = data.address.state || '';
             const country = data.address.country || '';
-
-            return { streetNumber, streetName, city, state, country};
+            const county= data.address.county|| '';
+             console.log(data.address)
+            return { streetNumber, streetName, city, state, country, county};
         } else {
             throw new Error('No address found for the provided coordinates');
         }

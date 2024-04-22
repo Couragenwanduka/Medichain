@@ -112,10 +112,16 @@ export const getAllDoctors = async (req, res) => {
 export const getDoctorBySpecialization = async (req, res) => {
     try {
         const {specialization} = req.params;
-        console.log(req.params)
-        console.log(specialization)
-        const doctor = await findDoctorBySpecialization(specialization);
-        res.status(200).json({ success: true, message: "Doctor fetched successfully", doctor });
+        const authHeader= req.headers.authorization;
+        const [bearer, token] = authHeader.split(' ');
+        if (bearer!== 'Bearer' ||!token) { // Check if bearer is 'Bearer' and token exists
+            return res.status(401).json({ success: false, message: "Unauthorized" });
+        }
+        const decoded= verifyCookie(token);
+        const findDoctor = await findDoctorBySpecialization(decoded,specialization);
+        const {address,doctor}=findDoctor[0]
+        console.log(address,doctor);
+        res.status(200).json({ success: true, message: "Doctor fetched successfully", doctorData:doctor, locationData:address });
     } catch (error) {
         console.error("Error fetching doctors:", error);
         res.status(500).json({ success: false, message: "Internal server error", error: error });
