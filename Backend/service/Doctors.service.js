@@ -56,7 +56,7 @@ export const findDoctorBySpecialization= async(decoded,specialization) =>{
             // Get address information for the doctor's latitude and longitude
             const address = await getAddressInfo(doctor.latitude, doctor.longitude);
             if(doctor.specialization === specialization){
-                doctorArrays.push({address, doctor});
+                doctorArrays.push(address, doctor);
             }else{
                 continue;
             }   

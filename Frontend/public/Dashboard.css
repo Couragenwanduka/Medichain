@@ -91,62 +91,67 @@
     color: white;
 }
 
-  .doctor-info {
-    background-color: #F3F3F4;
-    padding: 20px;
-    border-radius: 10px;
+/* CSS */
+.doctor-card {
+    display: grid;
+    grid-template-columns: auto 1fr; /* Image on the left, text on the right */
+    grid-column-gap: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: box-shadow 0.3s ease; /* Smooth transition for hover effect */
+    max-width: 400px; /* Adjusted maximum width */
   }
   
-  .doctor-info:hover {
-    transform: translateY(-5px);
+  .doctor-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hover effect */
+    background-color: #0F4C5C;
   }
   
-  .doctor-info img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
+  .doctor-img {
+    width: 120px; /* Adjusted width of the image */
+    position: absolute;
+    height: auto;
+    border-radius: 10px;
     object-fit: cover;
-    margin-right: 20px;
-    flex-grow: initial;
+    margin-left: 10%;
+    margin-top: -1%;
   }
   
-  .doctor-info .details {
-    font-family: Arial, sans-serif;
+  .doctor-details {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
-    margin-top: -20px;
-    color: #333;
-  }
-  .doctor-info:hover .details{
-    color: #F3F3F4;
   }
   
-  .doctor-info .name {
-    font-size: 20px;
+  .doctor-name {
+    position: relative;
     text-transform: capitalize;
-    font-weight: bold;
+    font-size: 8rem;
+    margin-left: -0px;
+    font-weight: 900;
     margin-bottom: 5px;
   }
   
-  .doctor-info .spec {
+  .doctor-specialization {
+    position: relative;
     font-size: 16px;
+    color: #666666;
+    margin-top:0px;
+    margin-left: 20px;
     margin-bottom: 10px;
   }
   
-  .doctor-info .location {
+  .doctor-location {
+    position: relative;
     font-size: 14px;
-    color: #666;
+    color: #999999;
+    margin: 0;
   }
   
-  
-  .doctor-info:hover {
-    background-color: #0F4C5C;
-    transform: translateY(-3px);
-   
-  }
+    
+
   
  
  .mainDiv1 {

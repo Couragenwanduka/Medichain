@@ -5,6 +5,7 @@ const DashBoard=()=>{
     const [activeTab, setActiveTab] =useState(0);
     const [activeSpec, setActiveSpec] = useState(0);
     const [showMore, setShowMore] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [location, setLocation] = useState('');
     const [doctor, setDoctor] = useState('');
     const [cookies] = useCookies(['token']);
@@ -32,13 +33,12 @@ const DashBoard=()=>{
         // if(response.data.doctor.length === 0){
         //     setError('Nodoctor found')
         // }
-        
-       console.log(response.data);
-        const [locationData, doctorData] = response.data; // Destructure the first array from response data
-        setLocation(locationData); // Set location state
-        setDoctor(doctorData);
+        setDoctor(response.data.findDoctor);
+        setLoading(false);
        }catch(error){
-        console.log(error)
+        setLoading(false);
+            console.log(error);
+            setError('Error fetching data');
        }
     }
     return(
@@ -129,18 +129,30 @@ const DashBoard=()=>{
         {showMore ? 'Show Less' : 'Show More'}
       </button>    
              <p>Available Doctors</p>
-             {Array.isArray(doctor) && doctor.map((singleDoctor, index) => (
-    <div key={index} className="doctor-info">
-        <img src={singleDoctor.image[0]} alt="Doctor" />
-        <div className="details">
-            <p className="name">Dr {singleDoctor.firstName} {singleDoctor.lastName}</p>
-            <p className="spec">{singleDoctor.specialization}</p>
-            {location && location[index] && (
-                <p className="location">{location[index].county}, {location[index].state}, {location[index].country}</p>
+             <div className="doctor-card">
+  {Array.isArray(doctor) && (
+    <div >
+      {doctor.map((singleDoctor, index) => (
+        <div key={index} className="doctor-list">
+          <>
+            {singleDoctor.image && singleDoctor.image[0] && (
+              <img src={singleDoctor.image[0]} alt="Doctor" className="doctor-img" />
             )}
+            <div className="doctor-details">
+              <p className="doctor-name">{singleDoctor.firstName} {singleDoctor.lastName}</p>
+              <p className="doctor-specialization">{singleDoctor.specialization}</p>
+              {/* {index === 0 && (
+                <p className="doctor-location">{singleDoctor.county} {singleDoctor.state}, {singleDoctor.country}</p>
+              )} */}
+            </div>
+          </>
         </div>
+      ))}
     </div>
-))}
+  )}
+</div>
+
+
 
              <p>Available Days</p>
              <div>

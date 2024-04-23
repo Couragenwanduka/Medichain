@@ -119,9 +119,7 @@ export const getDoctorBySpecialization = async (req, res) => {
         }
         const decoded= verifyCookie(token);
         const findDoctor = await findDoctorBySpecialization(decoded,specialization);
-        const {address,doctor}=findDoctor[0]
-        console.log(address,doctor);
-        res.status(200).json({ success: true, message: "Doctor fetched successfully", doctorData:doctor, locationData:address });
+        res.status(200).json({ success: true, message: "Doctor fetched successfully", findDoctor });
     } catch (error) {
         console.error("Error fetching doctors:", error);
         res.status(500).json({ success: false, message: "Internal server error", error: error });
