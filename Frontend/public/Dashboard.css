@@ -77,7 +77,7 @@
 .appointmentDiv div{
    display: flex;
 }
-.appointmentDiv p{
+.available{
     color: #DF2935;
     font-size: 15px;
 }
@@ -91,65 +91,85 @@
     color: white;
 }
 
-/* CSS */
+/* Container for doctor cards */
 .doctor-card {
-    display: grid;
-    grid-template-columns: auto 1fr; /* Image on the left, text on the right */
-    grid-column-gap: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 20px;
-    transition: box-shadow 0.3s ease; /* Smooth transition for hover effect */
-    max-width: 400px; /* Adjusted maximum width */
-  }
-  
-  .doctor-card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hover effect */
-    background-color: #0F4C5C;
-  }
-  
-  .doctor-img {
-    width: 120px; /* Adjusted width of the image */
-    position: absolute;
-    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 400px;
+}
+
+/* Individual doctor card */
+.doctor-list {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
     border-radius: 10px;
-    object-fit: cover;
-    margin-left: 10%;
-    margin-top: -1%;
-  }
-  
-  .doctor-details {
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    display: flex;
+}
+.textDiv{
     display: flex;
     flex-direction: column;
-  }
-  
-  .doctor-name {
-    position: relative;
+    justify-content: space-between;
+}
+
+/* Hover effect */
+.doctor-list:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #0F4C5C;
+   
+}
+.doctor-list,.doctor-name:hover{
+    color: #333;
+}
+/* Doctor's name */
+.doctor-name {
+    font-size: 1.7rem;
     text-transform: capitalize;
-    font-size: 8rem;
-    margin-left: -0px;
-    font-weight: 900;
+    font-weight: bold;
     margin-bottom: 5px;
-  }
-  
-  .doctor-specialization {
-    position: relative;
-    font-size: 16px;
-    color: #666666;
-    margin-top:0px;
-    margin-left: 20px;
-    margin-bottom: 10px;
-  }
-  
-  .doctor-location {
-    position: relative;
-    font-size: 14px;
-    color: #999999;
-    margin: 0;
-  }
-  
+    color: #DF2935;
+}
+
+/* Doctor's details container */
+.doctor-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Doctor's specialization */
+.doctor-info {
+    font-size: 1rem;
+    font-style: italic;
+    color: #666;
+}
+
+/* Doctor's experience */
+.doctor-experience {
+    font-size: 1rem;
+    color: #444;
+}
+
+/* Doctor's image */
+.doctor-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+    border: 3px solid #fff; /* Add border to create a circular frame */
+}
+
+/* Clearfix for floating elements */
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
     
 
   
@@ -189,6 +209,36 @@
  .collectionDiv{
     display: flex;  
  }
+ .appointment-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  
+  .appointment-card {
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .appointment-card p {
+    margin: 10px 0;
+  }
+  
+  .doctor-info {
+    margin-top: 20px;
+  }
+  
+  .doctor-info img {
+    width: 100%;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
   
   
  @media screen and (max-width: 768px){

@@ -109,3 +109,11 @@ export const findDoctorAndUpdate = async (_id, longitude, latitude) => {
         throw new Error("Error occurred while updating doctor: " + error.message);
     }
 }
+export const findDoctorById=async(_id)=>{
+    try{
+        const doctor = await Doctors.findOne({_id});
+        return doctor
+    }catch(error){
+        throw new Error ("Error occured while finding doctor by id ",error.message);
+    }
+}

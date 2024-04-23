@@ -24,8 +24,7 @@ const doctorsSchema=joi.object({
 const appointmentSchema=joi.object({
     patient:joi.string().required(),
     doctor:joi.string().required(),
-    date:joi.string().required(),
-    time:joi.string().required(),
+  
 })
 
 const prescriptionSchema=joi.object({
