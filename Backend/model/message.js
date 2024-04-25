@@ -2,10 +2,10 @@
 import mongoose from 'mongoose';
 
 const messageSchema =new mongoose.Schema({
-    message: {
+    message: [{
         type: String,
         required: true
-    },
+    }],
     patient: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Patients',
@@ -15,6 +15,10 @@ const messageSchema =new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Doctors',
         required: true
+    },
+    sender:{
+       type:String,
+       required:true
     },
     time: {
         type: String,

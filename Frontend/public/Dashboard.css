@@ -418,6 +418,89 @@
 }
 
 
+.textarea-like-input {
+    border: 1px solid #ccc; /* border style */
+    border-radius: 4px; /* rounded corners */
+    padding: 8px; /* padding for content */
+    font-size: 16px; /* font size */
+    width: 100%; /* width to fill container */
+    box-sizing: border-box; /* include padding and border in the width */
+    resize: none; /* prevent resizing */
+}
+
+/* CSS */
+.ProfileDiv {
+    padding: 20px;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-picture {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-picture-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.upload-label {
+    color: #fff;
+    cursor: pointer;
+}
+
+.upload-input {
+    display: none;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.profile-details {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logout-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background-color: #0056b3;
+}
 
  @media screen and (max-width: 768px){
     .aside {
@@ -481,4 +564,15 @@
         display: flex;  
         flex-direction: column;
      }
+     .appointment-container{
+        margin-left: -40px;
+     }
+     .message-platform {
+        width: 50%;
+        height: 50%;
+        margin-left: 30%;
+        margin-top: 25%;
+        display: flex;
+        flex-direction: row;
+    }
  }

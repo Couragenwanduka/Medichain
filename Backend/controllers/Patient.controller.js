@@ -1,7 +1,9 @@
 import {savePatient,findPatientByEmail} from '../service/Patient.service.js';
 import {patientValidate,LoginValidation} from '../config/joi.js';
 import {comparePassword} from '../config/bcrypt.js'
+import {verifyCookie} from '../helper/verifycookies.js';
 import jwt from 'jsonwebtoken';
+import Patients from '../model/Patient.js';
 
 export const CreatePatient=async(req,res)=>{
     try{
@@ -44,4 +46,22 @@ export const Login=async(req,res)=>{
      }catch(error){
          res.status(500).json({message:error.message});
      }
+}
+
+
+export const patientDetails = async(req, res) =>{
+try{
+    const authHeader = req.headers.authorization
+    const [bearer, token] = authHeader.split(' ');
+    if(bearer!== 'Bearer' ||!token){
+        return res.status(401).json({success:false,message:"Unauthorized"})
+    }
+    const verified = await verifyCookie(token);
+    if(!verified){
+        return res.status(401).json({success:false,message:"please login first"})
+    }
+    res.status(200).json({success:true,message:"user successfully gotten",Patient:verified });
+}catch(error){
+    res.status(500).json({message:error.message});
+}
 }

@@ -2,13 +2,15 @@ import { useState } from "react";
 import axios from "axios";
 import { useCookies } from 'react-cookie';
 import Modal from 'react-modal';
+import {useNavigate} from 'react-router-dom';
+
 
 const DashBoard = () => {
     const [activeTab, setActiveTab] = useState(0);
     const [showMore, setShowMore] = useState(false);
     const [loading, setLoading] = useState(false);
     const [doctor, setDoctor] = useState('');
-    const [cookies] = useCookies(['token']);
+    const [cookies,removeCookie] = useCookies(['token']);
     const [error, setError] = useState('');
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
@@ -18,21 +20,28 @@ const DashBoard = () => {
    const [message, setMessage] = useState('')
    const [doctorid , setDoctorId] = useState('')
    const [id , setId] = useState('')
+   const [displayInfo , setDisplayInfo] = useState('')
   const [successMessage, setSuccessMessage] = useState('')   
-  const [cancelappointmentModel, setCancelAppointmentModel] = useState('')
+  const [cancelappointmentModel, setCancelAppointmentModel] = useState(false)
   const [findMessage, setFindMessage] = useState('')
+  const Navigate= useNavigate()
   const status= 'cancelled'
-  const [messagesVisibility, setMessagesVisibility] = useState({});
+  const sender= "patient"
 
-  const toggleMessagesVisibility=(doctorId)=> {
-    setMessagesVisibility(prevState => ({
-        ...prevState,
-        [doctorId]: !prevState[doctorId]
-    }));
-}
-const  isMessagesVisible=(doctorId) =>{
-    return !!messagesVisibility[doctorId];
-}
+
+  const handleLogout = () => {
+    try {
+        // Clear the 'token' cookie
+        removeCookie('token');
+        
+        // Redirect to login page or perform any other logout actions
+        Navigate( '/patient-login');
+    } catch (error) {
+        // Handle errors if necessary
+        console.error('Logout error:', error);
+    }
+};
+   
     const handleMessageChange = (event) => {
         setMessage(event.target.value);
       };
@@ -121,7 +130,7 @@ const  isMessagesVisible=(doctorId) =>{
         try{
             const token = cookies.token;
             event.preventDefault();
-            const response= await axios.post(`http://localhost:4000/medichain/create-message-patients`,{message,doctorid},{
+            const response= await axios.post(`http://localhost:4000/medichain/create-message-patients`,{message,doctorid,sender},{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -158,31 +167,37 @@ const  isMessagesVisible=(doctorId) =>{
             console.log(error);
         }
       }
-      // Function to group messages by doctor ID
-function groupMessagesByDoctor(messages) {
-    const groupedMessages = {};
-    messages.forEach(message => {
-        const doctorId = message.doctorid._id; // Assuming doctorid is an object with _id field
-        if (!groupedMessages[doctorId]) {
-            groupedMessages[doctorId] = [];
-        }
-        groupedMessages[doctorId].push(message);
-    });
-    return groupedMessages;
-}
+      const patientDetails =async()=>{
+          try{
+           const token= cookies.token;
+           const response= await axios.get(`http://localhost:4000/medichain/patient-details`,{
+               headers:{
+                   'Authorization':`Bearer ${token}`
+               }
+           })
+           setDisplayInfo(response.data.Patient.user)
+          }catch(error){
+            console.log(error)
+          }
+      }
+      function groupMessagesByDoctor(messages) {
+        const groupedMessages = {};
+        messages.forEach(message => {
+            const doctorId = message.doctorid._id; // Assuming doctorid is an object with _id field
+            if (!groupedMessages[doctorId]) {
+                groupedMessages[doctorId] = [];
+            }
+            groupedMessages[doctorId].push(message);
+        });
+        return groupedMessages;
+    }
     return (
         <>
             <div className="containerDiv1">
                 <div className="imagecontainer">
                     <img src="/Header.jpg" className="image" alt="Header" />
                 </div>
-                <div className="main">
-                    <img src="/notifications.png" className="notification" alt="Notifications" />
-                    <div className="userDiv">
-                        <img src="/person.png" className="person" alt="Person" />
-                        <p>Hi there</p>
-                    </div>
-                </div>
+               
             </div>
             <aside className="aside">
                 <div>
@@ -218,7 +233,8 @@ function groupMessagesByDoctor(messages) {
                 </div>
                 <div>
                     <button className={activeTab === 'Profile' ? 'active btnD' : "btnD"}
-                        onClick={() => handleTabClick('Profile')}
+                        onClick={() => {handleTabClick('Profile') 
+                        patientDetails()}}
                     >
                         <img src="person.png" className="imageD" alt="Profile icon" />
                         Profile
@@ -325,67 +341,72 @@ function groupMessagesByDoctor(messages) {
                     </div>
                 </div>
             )}
-        <div className="message-platform">
-            {activeTab === 'Message' && (
-                <>
-                    {findMessage && findMessage.findMessage && findMessage.findMessage.length > 0 ? (
-                        Object.entries(groupMessagesByDoctor(findMessage.findMessage)).map(([doctorId, messages]) => (
-                            <div key={doctorId} className="doctor-container">
-                                <div className="doctor-info" onClick={() => toggleMessagesVisibility(doctorId)}>
-                                    <img src={messages[0].doctorid.image[0]} alt="Doctor Avatar" />
-                                    <h2 className="doctor-name">Dr. {messages[0].doctorid.firstName} {messages[0].doctorid.lastName}</h2>
-                                </div>
-                                <div className={`messages ${isMessagesVisible(doctorId) ? 'visible' : 'hidden'}`}>
-                                    {messages.map((message, index) => (
-                                        <div key={index} className="message-container">
-                                            <div className="message-content">
-                                                <p className="message-text">{message.message}</p>
-                                                <p className="message-meta">
-                                                    <span className="message-time">{message.time}</span>
-                                                </p>
-                                            </div>
-                                            <div className="message-avatar">
-                                                <img src={message.doctorid.image[0]} alt="Doctor Avatar" />
-                                            </div>
+       <div className="message-platform">
+        {activeTab === 'Message' && (
+            <>
+                {findMessage && findMessage.findMessage && findMessage.findMessage.length > 0 ? (
+                    Object.entries(groupMessagesByDoctor(findMessage.findMessage)).map(([doctorId, messages]) => (
+                        <div key={doctorId} className="doctor-container">
+                            {/* <div className="doctor-info">
+                                <img src={messages[0].doctorid.image[0]} alt="Doctor Avatar" />
+                                <h2 className="doctor-name">Dr. {messages[0].doctorid.firstName} {messages[0].doctorid.lastName}</h2>
+                            </div> */}
+                            <div className={`messages`}>
+                            {messages.map((message, index) => (
+                                <div key={index} className="message-container">
+                                    <div className="message-content">
+                                        <p className="message-text">{message.message}</p>
+                                        <h2 className="doctor-name">Dr. {messages[0].doctorid.firstName} {messages[0].doctorid.lastName}</h2>
+                                        <p className="message-meta">
+                                            <span className="message-time">{message.time}</span>
+                                        </p>
+                                        <div className="textarea-button-container">
+                                            <textarea className="textarea-like-input" rows="4"></textarea>
+                                            <button className="send-button">Send</button>
                                         </div>
-                                    ))}
+                                    </div>
+                                    <div className="message-avatar">
+                                        <img src={message.doctorid.image[0]} alt="Doctor Avatar" />
+                                    </div>
                                 </div>
-                            </div>
-                        ))
-                    ) : (
-                        <p>No messages found</p>
-                    )}
-                </>
-            )}
-        </div>
+                            ))}
 
-            {activeTab === 'Profile' && (
-                <div className="ProfileDiv">
-                    <div>
-                        <button>
-                            <div>
-                                <img alt="Profile" />
                             </div>
-                            <div>
-                                <img src="/addPhoto.png" alt="Add Photo" />
-                            </div>
-                        </button>
-                        <p>doiwjirf</p>
+                        </div>
+                    ))
+                ) : (
+                    <p>No messages found</p>
+                )}
+            </>
+        )}
+    </div>
+   
+
+    {activeTab === 'Profile' && (
+    <div className="ProfileDiv">
+        {displayInfo && (
+            <div className="profile-container">
+                <div className="profile-picture">
+                    <img src={displayInfo.profilePictureUrl || "/defaultProfilePicture.png"} alt="Profile" />
+                    <div className="profile-picture-overlay">
+                        <label htmlFor="upload" className="upload-label">{displayInfo.profilePictureUrl ? 'Change Picture' : 'Upload Picture'}</label>
+                        <input type="file" id="upload" className="upload-input" accept="image/*"  />
+                        {displayInfo.profilePictureUrl && <button className="delete-button" onClick={handleDeletePicture}>Delete Picture</button>}
                     </div>
-                    <div>
-                        <p>Email</p>
-                        <p>safrget</p>
-                    </div>
-                    <div>
-                        <p>Gender</p>
-                        <input type="radio" value={'Male'} />
-                        <input type="radio" value={'Female'} />
-                        <p>Brithday</p>
-                        <input type="date" />
-                    </div>
-                    <button>Log Out</button>
                 </div>
-            )}
+                <div className="profile-details">
+                    <h2>{displayInfo.firstName} {displayInfo.lastName}</h2>
+                    <p>Email: {displayInfo.email}</p>
+                    <p>Age: {displayInfo.age}</p>
+                    <p>Gender: {displayInfo.gender}</p>
+                    <p>Birthday: <input type="date" /></p>
+                </div>
+                <button className="logout-button" onClick={handleLogout}>Log Out</button>
+            </div>
+        )}
+    </div>
+)}
+
             
             <Modal 
   isOpen={cancelappointmentModel}

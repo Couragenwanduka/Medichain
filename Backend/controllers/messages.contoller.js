@@ -4,7 +4,7 @@ import {verifyCookie} from '../helper/verifycookies.js';
 
 export const CreateMessageByPatients = async (req, res) => {
     try{
-   const {message,doctorid}= req.body
+   const {message,doctorid,sender}= req.body
    const authHeader = req.headers.authorization
    const [bearer, token] = authHeader.split(' ');
    if(bearer!== 'Bearer' ||!token){
@@ -20,7 +20,7 @@ export const CreateMessageByPatients = async (req, res) => {
     if(!vaild){
         return res.status(400).json({message:"Error validating Input",error:vaild.error.details[0].message});
     }
-    const savedMessage = await saveMessage(message,patient,doctorid); 
+    const savedMessage = await saveMessage(message,patient,doctorid,sender); 
     return res.status(200).json({message:"message successfully sent", savedMessage});
     }catch(error){
      console.log(error);

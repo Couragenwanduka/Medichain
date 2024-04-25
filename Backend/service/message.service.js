@@ -1,12 +1,13 @@
 import Messages from '../model/message.js';
 import {findDoctorById} from '../service/Doctors.service.js'
 
-export const saveMessage = async (message,patient,doctorid) => {
+export const saveMessage = async (message,patient,doctorid,sender) => {
     try {
         const newMessage = new Messages({
             message,
             patient,
             doctorid,
+            sender,
             time: new Date(),
         
         });

@@ -1,7 +1,8 @@
 import express from 'express';
 import {
   CreatePatient,
-  Login
+  Login,
+  patientDetails,
 } from '../controllers/Patient.controller.js';
 
 import {
@@ -37,6 +38,8 @@ const router = express.Router();
 
 router.post('/medichain/patient-signup', CreatePatient);
 router.post('/medichain/patient-login', Login);
+router.get('/medichain/patient-details',patientDetails )
+
 
 router.post('/medichain/doctor-signup', createDoctor);
 router.post('/medichain/doctor-login', DoctorLogin);
