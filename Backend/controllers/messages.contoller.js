@@ -4,7 +4,7 @@ import {verifyCookie} from '../helper/verifycookies.js';
 
 export const CreateMessageByPatients = async (req, res) => {
     try{
-   const {message,doctor}= req.body
+   const {message,doctorid}= req.body
    const authHeader = req.headers.authorization
    const [bearer, token] = authHeader.split(' ');
    if(bearer!== 'Bearer' ||!token){
@@ -14,16 +14,17 @@ export const CreateMessageByPatients = async (req, res) => {
    if(!verified){
        return res.status(401).json({success:false,message:"please login first"})
    }
-   const patient= verified.Patients._id
-    const vaild= messageValidate({message,patient,doctor});
+   
+   const patient= verified.user._id
+    const vaild= messageValidate({message,patient,doctorid});
     if(!vaild){
         return res.status(400).json({message:"Error validating Input",error:vaild.error.details[0].message});
     }
-    const savedMessage = await saveMessage(message,patient,doctor);
+    const savedMessage = await saveMessage(message,patient,doctorid); 
     return res.status(200).json({message:"message successfully sent", savedMessage});
     }catch(error){
-        console.log(error);
-        return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+     console.log(error);
+     return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
     }
 }
 export const createMessageByDoctors= async(req,res)=>{
@@ -61,7 +62,7 @@ export const getMessageByPatientId = async (req, res) => {
         if(!verified){
             return res.status(401).json({success:false,message:"please login first"})
         }
-        const patient= verified.Patients._id
+        const patient= verified.user._id
         const findMessage = await findMessageByPatientId(patient);
         return res.status(200).json({message:"message fetched successfully", findMessage});
     }catch(error){

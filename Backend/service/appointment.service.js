@@ -71,9 +71,10 @@ export const findAppointmentByDoctorId = async(doctor)=>{
 
 export const updateAppointmentByPatientId = async(patient,status)=>{
     try{
-        const appointment = await Appointment.findOneAndUpdate(patient,{$set:{status}})
+        const appointment = await Appointment.findOneAndUpdate(patient,{$set:{status}},{new:true})
         return appointment
     }catch(error){
         throw new Error ('An error occurred while updating the appointment',error)
     }
 }
+

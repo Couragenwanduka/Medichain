@@ -121,8 +121,17 @@
     background-color: #0F4C5C;
    
 }
-.doctor-list,.doctor-name:hover{
-    color: #333;
+.doctor-list:hover{
+    .doctor-name{
+        color:#e0e0e0 ;
+        transition:  3s ease;
+    }
+    .doctor-info {
+        font-size: 1rem;
+        font-style: italic;
+        color: #d4cfcf;
+    }
+   
 }
 /* Doctor's name */
 .doctor-name {
@@ -169,10 +178,6 @@
     display: table;
     clear: both;
 }
-
-    
-
-  
  
  .mainDiv1 {
     display: inline-block;
@@ -209,38 +214,211 @@
  .collectionDiv{
     display: flex;  
  }
- .appointment-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-  
-  .appointment-card {
-    width: 300px;
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    margin: 20px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .appointment-card p {
-    margin: 10px 0;
-  }
   
   .doctor-info {
     margin-top: 20px;
   }
   
   .doctor-info img {
-    width: 100%;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 30px;
+    border: 3px solid #fff; 
+    margin-left: 50px;
+  }
+  .appointment-container {
+    width: 400px;
+    height: auto;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    background-color: #0F4C5C;
+    color: white;
+    transition: transform 0.3s ease-in-out;
+}
+
+.appointment-container:hover {
+    transform: translateY(-5px);
+    background-color: #0F4C5C;
+    color: white;
+    .message,.cancel1 {
+    background-color:white;
+    color: black;
+}
+}
+.appointment-name{
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    
+}
+
+.appointment-card {
+    margin-bottom: 20px;
+}
+
+.appointment-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.appointment-time {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.appointment-location {
+    margin-bottom: 10px;
+}
+
+.btnDiv {
+    display: flex;
+}
+
+.message,.cancel1 {
+    background-color:black;
+    color: black;
+    padding: 10px 20px;
+    border: none;
     border-radius: 5px;
-    margin-top: 10px;
+    cursor: pointer;
+}
+.message-modal {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
   }
   
+  .message-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
   
+  .send-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
   
+  .send-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .cancel-modal {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff; /* White background */
+    border-radius: 10px;
+    text-align: center;
+    border: 2px solid #28a745; /* Green border */
+  }
+  
+  .cancel-modal-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #28a745; /* Green color */
+  }
+  
+  .cancel-modal-text {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #333333; /* Dark gray color */
+  }
+  
+  .cancel-modal-buttons {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .cancel-modal-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .cancel-modal-button {
+    background-color: #dc3545; /* Red */
+    color: #ffffff;
+    border: none;
+  }
+  
+  .cancel-modal-button:hover {
+    background-color: #c82333; /* Darker red */
+  }
+  
+  .cancel-modal-button-confirm {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #28a745; /* Green */
+    color: #ffffff;
+    border: none;
+  }
+  
+  .cancel-modal-button-confirm:hover {
+    background-color: #218838; /* Darker green */
+  }
+  .message-platform {
+    width: 50%;
+    height: 50%;
+    margin-left: 30%;
+    margin-top: -35%;
+}
+
+.message-list {
+    overflow-y: auto;
+    height: calc(100vh - 100px); /* Adjust the height as needed */
+}
+
+.message-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.message-content {
+    background-color: #f1f0f0;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 70%;
+}
+
+.message-text {
+    margin: 0;
+}
+
+.message-meta {
+    font-size: 12px;
+    color: #777;
+}
+
+.message-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+
+
  @media screen and (max-width: 768px){
     .aside {
         display: flex; /* Use flexbox layout */

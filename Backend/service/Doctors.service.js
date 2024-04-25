@@ -40,9 +40,8 @@ export const findDoctorBySpecialization= async(decoded,specialization) =>{
         const latitude = decoded.latitude;
         const longitude = decoded.longitude;
         // Increase the distance by 30km from the current latitude and longitude
-        const range = increaseDistance(latitude, longitude, 30);
+        const range = increaseDistance(latitude, longitude, 300);
         const { newLatitude,  newLongitude } = range;
-
         // Find doctors within the range defined by the original and new latitude and longitude
         const doctors = await Doctors.find({
             latitude: { $gte: Math.min(latitude, newLatitude), $lte: Math.max(latitude, newLatitude) },

@@ -1,11 +1,12 @@
 import Messages from '../model/message.js';
+import {findDoctorById} from '../service/Doctors.service.js'
 
-export const saveMessage = async (message,patient,doctor) => {
+export const saveMessage = async (message,patient,doctorid) => {
     try {
         const newMessage = new Messages({
             message,
             patient,
-            doctor,
+            doctorid,
             time: new Date(),
         
         });
@@ -19,8 +20,18 @@ export const saveMessage = async (message,patient,doctor) => {
 
 export const findMessageByPatientId = async (patient) => {
     try {
-        const message = await Messages.find({patient});
-        return message;
+        const messages = await Messages.find({ patient });
+
+        for (const message of messages) {
+            try {
+                const doctor = await findDoctorById(message.doctorid);
+                message.doctorid = doctor;
+            } catch (error) {
+                console.error("Error occurred while finding doctor:", error.message);
+            }
+        }
+    
+        return messages;
     } catch (error) {
         throw new Error("Error occured while finding message", error.message);
     }

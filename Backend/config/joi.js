@@ -64,7 +64,7 @@ const loginSchema=joi.object({
 const messageSchema=joi.object({
     message:joi.string().required().min(10).max(80),
     patient:joi.string().required(),
-    doctor:joi.string().required()
+    doctorid:joi.string().required()
 });
 
 const updatedMessageSchema=joi.object({

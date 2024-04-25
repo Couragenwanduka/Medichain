@@ -23,7 +23,8 @@ import {
 import {
   CreateAppointment,
   FindAllAppointmentByPatientId,
-  FindAllAppointmentByDoctorId
+  FindAllAppointmentByDoctorId,
+  updateAppointmentStatus
 } from '../controllers/appointment.controller.js';
 
 import {
@@ -55,6 +56,7 @@ router.patch('/medichain/update-message-by-id/:messageId', updateMessageByid);
 router.post('/medichain/create-appointment', CreateAppointment);
 router.get('/medichain/find-all-appointment-by-patient-id', FindAllAppointmentByPatientId);
 router.get('/medichain/find-all-appointment-by-doctor-id', FindAllAppointmentByDoctorId);
+router.patch('/medichain/update-appointment-by-patient-id/:id',updateAppointmentStatus)
 
 router.post('/medichain/create-prescription', createPrescription);
 router.get('/medichain/get-prescription-by-patient-id', getPrescriptionByPatientId);

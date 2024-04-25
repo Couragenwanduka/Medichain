@@ -80,3 +80,13 @@ export const FindAllAppointmentByDoctorId = async (req, res) => {
     }
 }
 
+export const updateAppointmentStatus= async (req, res) => {
+    try{
+        const _id= req.params._id
+        const {status} =req.body; 
+        const updatedAppointment = await updateAppointmentByPatientId(_id,status);
+        return res.status(200).json({message:"Appointment updated successfully", updatedAppointment});
+    }catch(error){
+        return res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+    }
+}

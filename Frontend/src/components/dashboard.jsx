@@ -12,11 +12,31 @@ const DashBoard = () => {
     const [error, setError] = useState('');
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
+    const [messageModal, setMessageModal] = useState(false);
     const [appointment, setAppointmentData] = useState(null);
-    const [ secondAppointment, setSecondAppointment] = useState(null);
-   
-    
-   
+    const [secondAppointment, setSecondAppointment] = useState(null);
+   const [message, setMessage] = useState('')
+   const [doctorid , setDoctorId] = useState('')
+   const [id , setId] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')   
+  const [cancelappointmentModel, setCancelAppointmentModel] = useState('')
+  const [findMessage, setFindMessage] = useState('')
+  const status= 'cancelled'
+  const [messagesVisibility, setMessagesVisibility] = useState({});
+
+  const toggleMessagesVisibility=(doctorId)=> {
+    setMessagesVisibility(prevState => ({
+        ...prevState,
+        [doctorId]: !prevState[doctorId]
+    }));
+}
+const  isMessagesVisible=(doctorId) =>{
+    return !!messagesVisibility[doctorId];
+}
+    const handleMessageChange = (event) => {
+        setMessage(event.target.value);
+      };
+
     const handleOpenModal = (doctor) => {
         setModalOpen(true);
         setSelectedDoctor(doctor);
@@ -24,6 +44,23 @@ const DashBoard = () => {
 
     const handleCloseModal = () => {
         setModalOpen(false);
+    };
+ const handlecancleappointmodal= (appointment) => {
+    setCancelAppointmentModel(true);
+    setAppointmentData(appointment);
+    setId(appointment._id)
+ }
+ const handlecancleappointmodalclose= () => {
+    setCancelAppointmentModel(false);
+    setAppointmentData(null);
+ }
+    const handleOpenMessageModal = (secondAppointment) => {
+        setMessageModal(true);
+        setSelectedDoctor(secondAppointment);
+        setDoctorId(secondAppointment._id);
+    };
+    const handleCloseMessageModal = () => {
+        setMessageModal(false);
     };
 
     const handleButtonClick = () => {
@@ -43,8 +80,6 @@ const DashBoard = () => {
                 }
             })
             setDoctor(response.data.doctorDetails);
-            console.log(response.data.doctorDetails);
-            console.log(doctor)
             setLoading(false);
         } catch (error) {
             setLoading(false);
@@ -76,13 +111,65 @@ const DashBoard = () => {
                 'Authorization':`Bearer ${token}`
             }
         })
-        setAppointmentData(response.data);
+        setAppointmentData(response.data.appointment[0]);
          setSecondAppointment(response.data.appointment[1])
-        console.log(response.data)
         }catch(error){
             console.log(error);
         }
     }
+    const handleSubmit =async (event) => {
+        try{
+            const token = cookies.token;
+            event.preventDefault();
+            const response= await axios.post(`http://localhost:4000/medichain/create-message-patients`,{message,doctorid},{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            setSuccessMessage(response.data.message)
+        }catch(error){
+            console.log(error);
+        }
+      };
+      const handleCancelAppointment = async () => {
+        try{
+        const token = cookies.token;
+        const response= await axios.patch(`http://localhost:4000/medichain/update-appointment-by-patient-id/:${id}`,{status},{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        setSuccessMessage(response.data.message)
+        }catch(error){
+            console.log(error);
+        }
+      }
+      const getAllMessages = async()=>{
+        try{
+         const token = cookies.token;
+         const response= await axios.get(`http://localhost:4000/medichain/get-message-by-patient-id`,{
+             headers:{
+                 'Authorization':`Bearer ${token}`
+             }
+         })
+         setFindMessage(response.data)
+         console.log(response.data)
+        }catch(error){
+            console.log(error);
+        }
+      }
+      // Function to group messages by doctor ID
+function groupMessagesByDoctor(messages) {
+    const groupedMessages = {};
+    messages.forEach(message => {
+        const doctorId = message.doctorid._id; // Assuming doctorid is an object with _id field
+        if (!groupedMessages[doctorId]) {
+            groupedMessages[doctorId] = [];
+        }
+        groupedMessages[doctorId].push(message);
+    });
+    return groupedMessages;
+}
     return (
         <>
             <div className="containerDiv1">
@@ -121,7 +208,9 @@ const DashBoard = () => {
 
                 <div>
                     <button className={activeTab === 'Message' ? 'active btnD' : "btnD"}
-                        onClick={() => handleTabClick('Message')}
+                        onClick={() => {handleTabClick('Message')
+                        getAllMessages()}
+                    }
                     >
                         <img src="R.png" className="imageD" alt="Message icon" />
                         Message
@@ -193,26 +282,40 @@ const DashBoard = () => {
                     <p>Up Coming</p>
                     <div >
                    
-                    <div className="appointment-container">
-  {appointment && Array.isArray(appointment.appointment) && (
-    appointment.appointment.map((item, index) => (
-      <div key={index} className="appointment-card">
-        <p><strong>Date:</strong> {item.date}</p>
-        <p><strong>Doctor:</strong> {item.doctor}</p>
-        <p><strong>Location:</strong> {item.location}</p>
-        <div className="doctor-info">
-          <p><strong>Doctor:</strong> {secondAppointment.firstName} {secondAppointment.lastName}</p>
-          <img src={secondAppointment.image[0]} alt="Doctor" />
-          <p><strong>Location:</strong> {secondAppointment.county}, {secondAppointment.state}, {secondAppointment.country}</p>
+                    
+               
+                    {loading ? (
+            <div className="loader">Loading...</div>
+        ) : (
+            <div className="appointment-container">
+                <div>
+                {appointment && (
+                <div className="appointment-card">
+                    <div className="textDiv">
+                    <p className="appointment-time">Time: {new Date(appointment.time).toLocaleString('en-US', { timeZoneName: 'short', weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</p>
+                        <p className="appointment-location">Location: {appointment.location}</p>
+                    </div>
+                </div>
+                
+            )}
+            {secondAppointment && (
+                <div className="appointment-details">
+                    <div className="appointment-info">
+                        <p>Name:<span  className="appointment-name">{secondAppointment.firstName} {secondAppointment.lastName}</span></p>
+                        <img src={secondAppointment.image[0]} alt="Doctor" className="doctor-img" style={{ width: '100%', borderRadius: '8px' }} />
+                    </div>
+                </div>
+            )}
+                </div>
+                <div className="btnDiv" >
+                            <button className="message"  onClick={()=>handleOpenMessageModal(secondAppointment)}>Message</button>
+                            <button className="cancel1" onClick={()=>handlecancleappointmodal(appointment)}>Cancel Appointment</button>
+                        </div>
+            
         </div>
-      </div>
-    ))
-  )}
-</div>
+        
+        )}
 
-                        <div className="doctorDiv">1</div>
-                        <div className="doctorDiv">2</div>
-                        <div className="doctorDiv">2</div>
                     </div>
                     <p>Past</p>
                     <div>
@@ -222,11 +325,40 @@ const DashBoard = () => {
                     </div>
                 </div>
             )}
+        <div className="message-platform">
             {activeTab === 'Message' && (
-                <div className="appointmentDiv">
-                    <h1>No Messages</h1>
-                </div>
+                <>
+                    {findMessage && findMessage.findMessage && findMessage.findMessage.length > 0 ? (
+                        Object.entries(groupMessagesByDoctor(findMessage.findMessage)).map(([doctorId, messages]) => (
+                            <div key={doctorId} className="doctor-container">
+                                <div className="doctor-info" onClick={() => toggleMessagesVisibility(doctorId)}>
+                                    <img src={messages[0].doctorid.image[0]} alt="Doctor Avatar" />
+                                    <h2 className="doctor-name">Dr. {messages[0].doctorid.firstName} {messages[0].doctorid.lastName}</h2>
+                                </div>
+                                <div className={`messages ${isMessagesVisible(doctorId) ? 'visible' : 'hidden'}`}>
+                                    {messages.map((message, index) => (
+                                        <div key={index} className="message-container">
+                                            <div className="message-content">
+                                                <p className="message-text">{message.message}</p>
+                                                <p className="message-meta">
+                                                    <span className="message-time">{message.time}</span>
+                                                </p>
+                                            </div>
+                                            <div className="message-avatar">
+                                                <img src={message.doctorid.image[0]} alt="Doctor Avatar" />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No messages found</p>
+                    )}
+                </>
             )}
+        </div>
+
             {activeTab === 'Profile' && (
                 <div className="ProfileDiv">
                     <div>
@@ -254,6 +386,55 @@ const DashBoard = () => {
                     <button>Log Out</button>
                 </div>
             )}
+            
+            <Modal 
+  isOpen={cancelappointmentModel}
+  onRequestClose={handlecancleappointmodalclose}
+  contentLabel="Cancel Appointment Modal"
+  ariaHideApp={false}
+>
+{successMessage ? (
+  <div className="success-message">Appointment successfully cancelled!</div>
+) : (
+  <div className="cancel-modal">
+    <h1 className="cancel-modal-title">Cancel Appointment</h1>
+    <p className="cancel-modal-text">Are you sure you want to cancel this appointment?</p>
+    <div className="cancel-modal-buttons">
+      <button className="cancel-modal-button" onClick={handlecancleappointmodalclose}>No</button>
+      <button className="cancel-modal-button-confirm" onClick={handleCancelAppointment}>Yes</button>
+    </div>
+  </div>
+)}
+
+ 
+</Modal>
+
+    <Modal
+      isOpen={messageModal}
+      onRequestClose={handleCloseMessageModal}
+      contentLabel="Message"
+      ariaHideApp={false}
+      className="message-modal" // Add a class name for styling
+    >
+      <h2>Send a Message</h2>
+      {/* Conditionally render textarea or success message */}
+      {successMessage ? (
+        <div className="success-message">Message sent successfully!</div>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <textarea
+            value={message}
+            onChange={handleMessageChange}
+            placeholder="Type your message here..."
+            rows={6}
+            cols={40}
+            required
+            className="message-input" // Add a class name for styling
+          />
+          <button type="submit" className="send-button">Send</button> {/* Add a class name for styling */}
+        </form>
+      )}
+    </Modal>
            <Modal
     isOpen={modalOpen}
     onRequestClose={handleCloseModal}
@@ -276,15 +457,15 @@ const DashBoard = () => {
 >
     {selectedDoctor && (
         <div style={{ textAlign: 'center' }}>
-            <h2 style={{ fontWeight: 'bold', marginBottom: '10px',color:'red', textTransform: 'capitalize', fontSize:'60px' }}>
+            <h2 style={{ fontWeight: 'bold', marginBottom: '10px',color:'#0F4C5C', textTransform: 'capitalize', fontSize:'60px', }}>
                 {selectedDoctor.firstName} {selectedDoctor.lastName}
             </h2>
             <img
                 src={selectedDoctor.image[0]}
                 alt="Doctor"
-                style={{ width: '150px', height: '150px', borderRadius: '50%', marginBottom: '20px' }}
+                style={{ width: '150px', height: '150px', borderRadius: '50%', marginBottom: '20px',  }}
             />
-            <div style={{ textAlign: 'left' }}>
+            <div style={{ textAlign: 'left' ,fontSize:"16px" }}>
                 <p>
                     <strong>Bio:</strong> {selectedDoctor.bio}
                 </p>
@@ -310,7 +491,7 @@ const DashBoard = () => {
              style={{ marginTop: '20px', padding: '10px 20px', borderRadius: '5px', border: 'none', backgroundColor: '#0F4C5C', color: '#fff', cursor: 'pointer' }}
              >Book Appointment</button>
     <button onClick={handleCloseModal} style={{ marginTop: '20px', padding: '10px 20px', borderRadius: '5px', border: 'none', backgroundColor: '#007bff', color: '#fff', cursor: 'pointer',marginLeft:'20px' }}>
-        Close Modal
+        Close 
     </button>
 </Modal>
 

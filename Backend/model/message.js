@@ -1,3 +1,4 @@
+
 import mongoose from 'mongoose';
 
 const messageSchema =new mongoose.Schema({
@@ -10,13 +11,13 @@ const messageSchema =new mongoose.Schema({
         ref: 'Patients',
         required: true
     },
-    doctor: {
+    doctorid: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Doctors',
         required: true
     },
     time: {
-        type: Number,
+        type: String,
         required: true
     }
 })

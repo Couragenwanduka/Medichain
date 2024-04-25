@@ -119,6 +119,9 @@ export const getDoctorBySpecialization = async (req, res) => {
         }
         const decoded= verifyCookie(token);
         const findDoctor = await findDoctorBySpecialization(decoded,specialization);
+        if(findDoctor.length===0){
+            return res.status(400).json({ success: false, message: "Doctor not found" });
+        }
         const { state,country,county}=findDoctor[0]
         const {_id,firstName,lastName,email,bio,age,experience,gender,image}=findDoctor[1]
         const doctorDetails=({_id,firstName,lastName,email,bio,age,experience,gender,image,state,country,county})
